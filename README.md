@@ -12,4 +12,4 @@ Exit code matches `go test` (non-zero on failure). Use `--no-color` or `NO_COLOR
 
 Install:
 
-    go install github.com/TimothyStiles/timgorunner@latest
+    go install github.com/timc4662/timgorunner@latest
