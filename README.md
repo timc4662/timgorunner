@@ -9,3 +9,7 @@ and writes a self-contained HTML report (filter by status, collapsible output, d
 
 Exit code matches `go test` (non-zero on failure). Use `--no-color` or `NO_COLOR=1` to disable colours;
 `--` passes any remaining flags straight to `go test`.
+
+Install:
+
+    go install github.com/TimothyStiles/timgorunner@latest
