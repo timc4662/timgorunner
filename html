@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Go test results</title>
+<style>
+:root{--bg:#fff;--fg:#1f2328;--mut:#656d76;--card:#f6f8fa;--bd:#d0d7de;--pass:#1a7f37;--fail:#cf222e;--skip:#9a6700;--passbg:#dafbe1;--failbg:#ffebe9;--skipbg:#fff8c5}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--fg:#e6edf3;--mut:#8b949e;--card:#161b22;--bd:#30363d;--pass:#3fb950;--fail:#f85149;--skip:#d29922;--passbg:#12261e;--failbg:#2d1215;--skipbg:#2b2110}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:22px;margin:0 0 4px}
+.meta{color:var(--mut);font-size:12px;margin-bottom:16px;word-break:break-word}
+.banner{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:8px;border:1px solid var(--bd);margin-bottom:16px;font-weight:600;font-size:18px}
+.banner.ok{background:var(--passbg);color:var(--pass);border-color:var(--pass)}
+.banner.bad{background:var(--failbg);color:var(--fail);border-color:var(--fail)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px 12px}
+.card b{display:block;font-size:22px}
+.card span{color:var(--mut);font-size:12px}
+.card.pass b{color:var(--pass)}.card.fail b{color:var(--fail)}.card.skip b{color:var(--skip)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+button{background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:5px 12px;font:inherit;cursor:pointer}
+button.active{border-color:var(--fg);font-weight:600}
+.pkg{border:1px solid var(--bd);border-radius:8px;margin-bottom:12px;overflow:hidden}
+.pkg>summary{cursor:pointer;padding:10px 12px;background:var(--card);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pkg>summary .name{font-weight:600;word-break:break-all}
+.badge{display:inline-block;min-width:44px;text-align:center;font-size:11px;font-weight:700;padding:1px 6px;border-radius:10px;border:1px solid}
+.badge.pass{color:var(--pass);background:var(--passbg);border-color:var(--pass)}
+.badge.fail{color:var(--fail);background:var(--failbg);border-color:var(--fail)}
+.badge.skip{color:var(--skip);background:var(--skipbg);border-color:var(--skip)}
+.dim{color:var(--mut);font-size:12px}
+.test{border-top:1px solid var(--bd)}
+.test>summary{padding:6px 12px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.test.noout>summary{cursor:default;list-style:none}
+.test.noout>summary::-webkit-details-marker{display:none}
+.test .tname{flex:1;word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+pre{margin:0;padding:10px 12px;background:var(--card);border-top:1px solid var(--bd);overflow:auto;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}
+.hidden{display:none!important}
+h2{font-size:16px;margin:24px 0 8px}
+</style>
+</head>
+<body>
+<main>
+<h1>Go test results</h1>
+<div class="meta">Sat 31 Oct 2026 17:21:36 GMT &middot; 80ms &middot; go version go1.19.5 darwin/arm64<br><code>go test -json ./...</code></div>
+
+<div class="banner ok">PASS &mdash; all tests passed</div>
+
+<div class="cards">
+<div class="card"><b>0</b><span>tests</span></div>
+<div class="card pass"><b>0</b><span>passed</span></div>
+<div class="card fail"><b>0</b><span>failed</span></div>
+<div class="card skip"><b>0</b><span>skipped</span></div>
+<div class="card"><b>0</b><span>packages passed</span></div>
+<div class="card"><b>80ms</b><span>duration</span></div>
+</div>
+
+
+
+<div class="bar">
+<button class="active" data-f="all">All</button>
+<button data-f="fail">Failed</button>
+<button data-f="skip">Skipped</button>
+<button data-f="pass">Passed</button>
+<span style="flex:1"></span>
+<button id="expand">Expand all</button>
+<button id="collapse">Collapse all</button>
+</div>
+
+
+<details class="pkg" data-status="skip" >
+<summary>
+<span class="badge skip">NONE</span>
+<span class="name">timgorunner</span>
+<span class="dim">no test files</span>
+</summary>
+
+
+</details>
+
+</main>
+<script>
+(function(){
+  var buttons=document.querySelectorAll('button[data-f]');
+  function apply(f){
+    buttons.forEach(function(b){b.classList.toggle('active',b.dataset.f===f)});
+    document.querySelectorAll('.test').forEach(function(t){
+      t.classList.toggle('hidden',f!=='all'&&t.dataset.status!==f);
+    });
+    document.querySelectorAll('.pkg').forEach(function(p){
+      var vis=p.querySelectorAll('.test:not(.hidden)').length>0;
+      var show=f==='all'||vis||(f==='fail'&&p.dataset.status==='fail');
+      p.classList.toggle('hidden',!show);
+    });
+  }
+  buttons.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.f)})});
+  document.getElementById('expand').addEventListener('click',function(){
+    document.querySelectorAll('details').forEach(function(d){d.open=true});
+  });
+  document.getElementById('collapse').addEventListener('click',function(){
+    document.querySelectorAll('details.test').forEach(function(d){d.open=false});
+  });
+})();
+</script>
+</body>
+</html>
